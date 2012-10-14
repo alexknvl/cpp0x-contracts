@@ -1,0 +1,4 @@
+﻿syntax: glob
+bin/*
+build/*
+wiki/*
