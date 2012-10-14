@@ -1,3 +1,6 @@
+#ifndef CPPCONTRACTS_CONTRACTS_HPP_
+#define CPPCONTRACTS_CONTRACTS_HPP_
+
 #include <exception>
 #include <string>
 
@@ -73,3 +76,5 @@ void __assertionFailed(const char* desc, const char* expr, const char* file, uns
  *****************************************************************************/
 #define requires(x) on_scope_init({ assert(expression); })
 #define ensures(expression) on_scope_exit({ assert(expression); })
+
+#endif//CPPCONTRACTS_CONTRACTS_HPP_

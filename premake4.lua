@@ -49,10 +49,8 @@ solution "c++0x-contracts"
             "src/SampleApp/**.hpp" }
   
   project "CppContracts"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
-    
-    defines "CPPCONTRACTS_DLL"
     
     includedirs { "src" }
     files { "src/CppContracts/**.cpp",
