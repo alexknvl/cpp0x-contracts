@@ -13,12 +13,8 @@ public:
     ensures(value > 0);
   }
   
-  T operator T() {
-    return value;
-  }
-  
 private:
-  T value
+  T value;
 };
 
 double MySqrt(double v) {
@@ -28,13 +24,13 @@ double MySqrt(double v) {
 
 int main(int argc, char** argv) {
   try {
-    PositiveNumber v(1);
+    PositiveNumber<int> v(1);
   } catch(AssertionFailed& e) {
     printf("%s\n", e.what());
   }
   
   try {
-    PositiveNumber v(-2);
+    PositiveNumber<int> v(-2);
   } catch(AssertionFailed& e) {
     printf("%s\n", e.what());
   }
@@ -52,7 +48,7 @@ int main(int argc, char** argv) {
   }
   
   try {
-    assertThrows(MySqrt(-1), std::string&);
+    assertThrows(MySqrt(-1), int);
   } catch(AssertionFailed& e) {
     printf("%s\n", e.what());
   }

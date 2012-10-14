@@ -1,12 +1,20 @@
 #ifndef CPPCONTRACTS_CONTRACTS_HPP_
 #define CPPCONTRACTS_CONTRACTS_HPP_
 
+// Awesome contracts implementation (c) Konovalov Alexander
+// No __result__ or __old__ yet =(
+// I have an idea how to make __result__ work but it will 
+// be very platform-specific, and will require a lot of
+// assembly hackery.
+
+#include <tr1/functional>
 #include <exception>
 #include <string>
 
 /******************************************************************************
  * Preprocessor magic
  *****************************************************************************/
+
 #define PP_STRING(a) #a
 #define PP_CONCAT2(a,b)  a##b
 #define PP_CONCAT3(a, b, c) a##b##c
@@ -33,12 +41,16 @@ void __assertionFailed(const char* desc, const char* expr, const char* file, uns
 
 #define assert(expr) \
   do {\
+    bool __fail = false; \
     try { \
-        if (!(expr)) {\
-            __assertionFailed("Assertion failed", PP_STRING(expr), __FILE__, __LINE__, __PRETTY_FUNCTION__);\
-        }\
+      if (!(expr)) {\
+        __fail = true;\
+      }\
     } catch (...) { \
-    __assertionFailed("Assertion failed : expression has thrown an exception", PP_STRING(expr), __FILE__, __LINE__, __PRETTY_FUNCTION__); \
+      __assertionFailed("Assertion failed : expression has thrown an exception", PP_STRING(expr), __FILE__, __LINE__, __PRETTY_FUNCTION__); \
+    } \
+    if (__fail) { \
+      __assertionFailed("Assertion failed", PP_STRING(expr), __FILE__, __LINE__, __PRETTY_FUNCTION__); \
     } \
   } while(0)
   
@@ -57,24 +69,34 @@ void __assertionFailed(const char* desc, const char* expr, const char* file, uns
   } while(0)
 
 /******************************************************************************
- * on_init and on_exit
+ * on_scope_init and on_scope_exit macroses
  *****************************************************************************/
-#define on_init(function) \
-  struct PP_UNIQUE_LABEL(on_init_class) { \
-    inline PP_UNIQUE_LABEL(on_init_class) function \
-  }; \
-  PP_UNIQUE_LABEL(on_init_class) PP_UNIQUE_LABEL(on_init);
+struct __call_on_constructor {
+    template<class Func> inline __call_on_constructor(Func func) {
+        func();
+    }
+};
+#define on_scope_init(function) \
+    __call_on_constructor PP_UNIQUE_LABEL(on_init) (function)
 
-#define on_exit(function) \
-    struct PP_UNIQUE_LABEL(on_exit_class) { \
-        inline PP_UNIQUE_LABEL(~on_exit_class) function \
-    }; \
-    PP_UNIQUE_LABEL(on_exit_class) PP_UNIQUE_LABEL(on_exit);
+struct __call_on_destructor {
+    std::tr1::function<void()> _function;
+    template<class Func> inline __call_on_destructor(Func func) {
+        _function = func;
+    }
+    inline ~__call_on_destructor() {
+        _function();
+    }
+};
+#define on_scope_exit(function) \
+    __call_on_destructor PP_UNIQUE_LABEL(on_exit) (function)
 
 /******************************************************************************
  * Contracts
  *****************************************************************************/
-#define requires(x) on_scope_init({ assert(expression); })
-#define ensures(expression) on_scope_exit({ assert(expression); })
+#define requires(expression) on_scope_init([&] () { assert(expression); })
+#define ensures(expression) on_scope_exit([&] () { assert(expression); })
+#define invariant() on_scope_init([&] () { __invariant(); }); on_scope_exit([&] () { __invariant(); return; })
 
 #endif//CPPCONTRACTS_CONTRACTS_HPP_
+

@@ -15,6 +15,9 @@ solution "c++0x-contracts"
 
   location "build"
   
+  configuration "gmake"
+    buildoptions "-std=c++0x"
+  
   for _,arch in pairs({"x32", "x64"}) do
     for _,conf in pairs({"debug", "release"}) do
       for _,plat in pairs({"vs2008"}) do
