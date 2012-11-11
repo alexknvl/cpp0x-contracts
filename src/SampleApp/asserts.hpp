@@ -1,6 +1,9 @@
 #ifndef SAMPLAAPP_ASSERTS_HPP_
 #define SAMPLAAPP_ASSERTS_HPP_
 
+#include <exception>
+#include <string>
+
 /******************************************************************************
  * Assertions
  *****************************************************************************/

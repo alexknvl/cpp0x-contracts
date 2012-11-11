@@ -8,8 +8,6 @@
 // assembly hackery.
 
 #include <tr1/functional>
-#include <exception>
-#include <string>
 
 #ifndef assert
   #include <cassert>
