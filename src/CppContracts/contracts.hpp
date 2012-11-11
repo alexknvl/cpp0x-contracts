@@ -1,7 +1,8 @@
 #ifndef CPPCONTRACTS_CONTRACTS_HPP_
 #define CPPCONTRACTS_CONTRACTS_HPP_
 
-// Awesome contracts implementation (c) Konovalov Alexander
+// Awesome contracts implementation (c) 2012 Alexander Konovalov
+
 // No __result__ or __old__ yet =(
 // I have an idea how to make __result__ work but it will 
 // be very platform-specific, and will require a lot of
