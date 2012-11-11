@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "asserts.hpp"
 #include <CppContracts/contracts.hpp>
 
 template<class T>
