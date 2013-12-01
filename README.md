@@ -9,7 +9,7 @@ Contract Programming is also known as Design by Contract (DbC) and it was first 
 
 ## Library
 
-This library supports the **simplest features** of Eiffel Contract programming, preconditions and postconditions, with no inheritance. It requires C++0x or newer versions of the C++ programming language.
+This library supports the simplest features of Eiffel Contract programming, preconditions, postconditions, and invariant conditions, however it **does not support inheritance**. It **requires C++0x** or newer versions of the C++ programming language.
 
 
 ## Features
