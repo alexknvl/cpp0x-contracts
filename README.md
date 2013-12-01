@@ -14,10 +14,11 @@ This library supports the **simplest features** of Eiffel Contract programming, 
 
 ## Features
 
-### `requires(expression)`
+### Preconditions: `requires(expression)`
 
 A function/object/namespace precondition. Will test the `expression` upon entering the scope.
 
+    ```cpp
     #include <CppContracts/contracts.hpp>
 
     float MySqrt(float x) {
@@ -25,11 +26,13 @@ A function/object/namespace precondition. Will test the `expression` upon enteri
       requires(x > 0);
       return ::sqrt(x);
     }
+    ```
 
-### `ensures(expression)`
+### Postconditions: `ensures(expression)`
 
 A function/object/namespace postcondition. Will test the `expression` on scope exit.
 
+    ```cpp
     #include <CppContracts/contracts.hpp>
 
     class PositiveNumber {
@@ -47,11 +50,13 @@ A function/object/namespace postcondition. Will test the `expression` on scope e
     private:
       int value;
     };
+    ```
 
-### `invariant()`
+### Invariant conditions: `invariant()`
 
 An object or module invariant condition. Will invoke the `__invariant` function upon entering or exiting the scope.
 
+    ```cpp
     #include <CppContracts/contracts.hpp>
 
     class PositiveNumber {
@@ -74,11 +79,13 @@ An object or module invariant condition. Will invoke the `__invariant` function 
 
       int value;
     };
+    ```
 
 ### Custom asserts
 
 The `requires` and `ensures` macroses use `assert` macros internally. However you can easily provide them with your own implementation of assertions, for instance one throwing exceptions instead of aborting the execution.
 
+    ```cpp
     #include <MyFunkyAsserts.hpp>
     #include <CppContracts/contracts.hpp>
 
@@ -88,3 +95,4 @@ The `requires` and `ensures` macroses use `assert` macros internally. However yo
         requires(1 == 0);
       } catch(...) { }
     }
+    ```
